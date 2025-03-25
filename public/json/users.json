@@ -1,0 +1,20 @@
+[
+  {
+    "id": 5,
+    "name": "Her bunheng",
+    "email": "bunheng553@outlook.com",
+    "password": "123",
+    "age": 34,
+    "phone": "0122571545",
+    "avatar": "640cd6fb-83e6-43e4-9018-f80e817ac92d"
+  },
+  {
+    "id": 6,
+    "name": "Her bunheng",
+    "email": "bunheng553@outlook.com",
+    "password": "123",
+    "age": 18,
+    "phone": "0122571545",
+    "avatar": "ec15ce83-171d-4c89-b36f-b469214a8741"
+  }
+]
