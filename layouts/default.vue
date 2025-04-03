@@ -1,10 +1,8 @@
 <template>
   <Splitter style="height: 100vh" class="flex flex-row">
     <SplitterPanel
-      class="flex items-center justify-center"
-      :size="25"
-      :minSize="20"
-      style="height: 100vh;"
+      style="height: 100vh; width: 430px;"
+      :minSize="22"
       v-if="is_pc"
     >
       <profile />
@@ -21,7 +19,7 @@
 <script setup lang="ts">
 import Header from "./Header.vue";
 import Footer_mobile from "~/layouts/footer_mobile.vue";
-import profile from "~/composables/profile.vue";
+import profile from "~/layouts/profile.vue";
 import { ref, onMounted, onUnmounted } from "vue";
 
 const is_pc = ref(false);

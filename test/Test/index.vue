@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import showdrawer from '@/composables/showdrawer.vue';
+import showdrawer from '~/component/showdrawer.vue';
 import { useUserStore } from '@/stores/user';
 
 const userStore = useUserStore();

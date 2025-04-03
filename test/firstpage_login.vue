@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useCookie, useState } from '#app';  // Use the correct `useCookie` and `useState` from '#app'
-import { useAuthUser } from '~/composables/useAuthUser';
+import { useAuthUser } from '~/component/useAuthUser';
 import { navigateTo } from '#app';  // Import navigateTo
 
 const authUser = useAuthUser();

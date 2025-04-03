@@ -1,8 +1,8 @@
 <template>
     <header>
-        <nav class="flex flex-wrap bg-gray-800 text-white items-center w-full">
+        <nav class="flex justify-between items-center flex-wrap bg-gray-800 text-white items-center w-full">
     <!-- Left Side: Logo, Search Bar, and Icons -->
-    <ul class="flex  space-x-2 w-sm max-w-sm md:w-full lg:w-full items-center p-4">
+    <ul class="flex  space-x-2 w-full max-w-xl md:w-full lg:w-full items-center p-4">
 
         <li><img src="~/assets/logo/reading.png" alt="App Anh" title="App Anh" class="w-12 h-12"></li>
         <li class="w-full">
@@ -14,7 +14,7 @@
     </ul>
 
     <!-- Right Side: Login & Register -->
-    <ul class="flex justify-start items-center p-2 w-96 space-x-4 bg-blue-500 rounded-full">
+    <ul class="flex justify-start items-center ml-2 mr-2 p-2 w-full max-w-xl md:w-full lg:w-full space-x-4 bg-blue-500 rounded-2xl">
         <li><a href="/">Login</a></li>
         <li><a href="/">Register</a></li>
     </ul>
