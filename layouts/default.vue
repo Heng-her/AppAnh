@@ -1,14 +1,14 @@
 <template>
   <Splitter style="height: 100vh" class="flex flex-row">
     <SplitterPanel
-      style="height: 100vh; width: 430px;"
-      :minSize="22"
+      style="height: 100vh; width: 450px;"
+      :minSize="23"
       v-if="is_pc"
     >
-      <profile />
+      <profile class="h-full overflow-y-auto scrollbar-hide"/>
     </SplitterPanel>
     <SplitterPanel class="h-full w-full" :size="75" :minSize="30">
-      <main style="height: 100vh;">
+      <main style="height: 100vh;" class="h-full scrollbar-hide overflow-y-auto">
         <Header/>
         <slot />
         <Footer_mobile v-if="is_mobile" />
@@ -43,3 +43,13 @@ onUnmounted(() => {
   window.removeEventListener("resize", checkMobile);
 });
 </script>
+<style scoped>
+.scrollbar-hide {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.scrollbar-hide::-webkit-scrollbar{
+  display: none; /* Chrome, Safari, Opera */
+  overflow: hidden;
+}
+</style>

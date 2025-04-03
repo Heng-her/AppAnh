@@ -8,6 +8,9 @@ export default defineNuxtConfig({
     port: 3000,
     host: '0.0.0.0',
   },
+  css: [
+    'primeicons/primeicons.css'
+  ],
   primevue: {
     options: {
         ripple: true,

@@ -1,8 +1,8 @@
 <template>
     <header>
-        <nav class="flex justify-between items-center flex-wrap bg-gray-800 text-white items-center w-full">
+        <nav class="flex justify-between items-center flex-wrap bg-gray-800 text-white w-full">
     <!-- Left Side: Logo, Search Bar, and Icons -->
-    <ul class="flex  space-x-2 w-full max-w-xl md:w-full lg:w-full items-center p-4">
+    <ul class="flex space-x-2 w-full max-w-xl md:w-full lg:w-full items-center p-4">
 
         <li><img src="~/assets/logo/reading.png" alt="App Anh" title="App Anh" class="w-12 h-12"></li>
         <li class="w-full">
