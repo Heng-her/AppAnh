@@ -14,6 +14,13 @@ export default defineConfig({
       entry: 'src/main/index.js', // Main process entry file
     })
   ],
+   build: {
+    rollupOptions: {
+      input: {
+        index: path.join(__dirname, 'src/main/index.js') // or .cjs
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
