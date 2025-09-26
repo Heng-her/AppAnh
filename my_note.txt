@@ -1,0 +1,12 @@
+# Clear electron-builder cache
+Remove-Item -Recurse -Force "$env:LOCALAPPDATA\electron-builder\Cache" -ErrorAction SilentlyContinue
+Remove-Item -Recurse -Force "$env:APPDATA\electron-builder\Cache" -ErrorAction SilentlyContinue
+
+# Clear npm cache
+npm cache clean --force
+
+# Clean project
+npm run clean
+
+#for build 
+npm run electron:build-win

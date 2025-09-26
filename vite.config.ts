@@ -1,24 +1,53 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import electron from 'vite-plugin-electron/simple'
+import electron from 'vite-plugin-electron'
+import renderer from 'vite-plugin-electron-renderer'
+import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [
     vue(),
-    electron({
-      main: {
-        entry: 'electron/main.ts',
-        onstart(args) {
-          args.startup()
+    electron([
+      {
+        entry: './electron/main.ts',
+        onstart(options) {
+          options.startup()
         },
+        vite: {
+          build: {
+            sourcemap: process.env.NODE_ENV === 'development',
+            minify: process.env.NODE_ENV !== 'development',
+            outDir: 'dist-electron',
+            rollupOptions: {
+              external: ['electron']
+            }
+          }
+        }
       },
-      preload: {
-        input: 'electron/preload.ts',
-      },
-    }),
+      {
+        entry: './electron/preload.ts',
+        vite: {
+          build: {
+            sourcemap: process.env.NODE_ENV === 'development',
+            minify: process.env.NODE_ENV !== 'development',
+            outDir: 'dist-electron',
+            rollupOptions: {
+              external: ['electron']
+            }
+          }
+        }
+      }
+    ]),
+    renderer()
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'src')
+    }
+  },
+  base: process.env.NODE_ENV === 'production' ? './' : '/',
   build: {
-    // Ensure proper module handling
-    target: 'esnext'
+    emptyOutDir: true,
+    outDir: 'dist'
   }
 })

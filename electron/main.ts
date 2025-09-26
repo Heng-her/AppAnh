@@ -13,15 +13,18 @@ const PUBLIC = (process.env.PUBLIC = app.isPackaged
   : path.join(process.env.DIST, "../public"));
 
 let win: BrowserWindow | null;
-const preload = path.join(__dirname, "./preload.js");
+const preload = app.isPackaged
+  ? path.join(__dirname, "./preload.js") // compiled
+  : path.join(__dirname, "../preload.ts"); // dev
+
 const url = process.env["VITE_DEV_SERVER_URL"];
 
 function createWindow() {
   win = new BrowserWindow({
     icon: path.join(PUBLIC, "favicon.ico"),
     webPreferences: {
-      contextIsolation: false,
-      nodeIntegration: true,
+      contextIsolation: true, // required when using contextBridge
+      nodeIntegration: false, // safer
       preload,
     },
   });
