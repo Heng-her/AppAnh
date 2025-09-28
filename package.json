@@ -23,6 +23,9 @@
     ]
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.13",
+    "tailwindcss": "^4.1.13",
+    "uuid": "^13.0.0",
     "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
@@ -31,14 +34,11 @@
     "@types/vue-router": "^2.0.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.7.0",
-    "autoprefixer": "^10.4.21",
     "concurrently": "^9.2.1",
     "cross-env": "^10.0.0",
     "electron": "^38.1.0",
     "electron-builder": "^26.0.12",
-    "postcss": "^8.5.6",
     "rimraf": "^6.0.1",
-    "tailwindcss": "^4.1.13",
     "typescript": "~5.8.3",
     "vite": "^7.1.2",
     "vite-plugin-electron": "^0.29.0",

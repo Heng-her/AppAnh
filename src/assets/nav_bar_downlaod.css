@@ -1,0 +1,46 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.download {
+  display: flex;
+  justify-content: center;
+  background: #2c3e50;
+  padding: 12px 20px;
+  border-block-end: 2px solid #34495e;
+  font-family: Arial, sans-serif;
+}
+
+.download a {
+  color: #ecf0f1;
+  text-decoration: none;
+  padding: 10px 18px;
+  margin: 0 5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  cursor: alias;
+}
+
+.download a:hover {
+  background: #3498db;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.download .youtube:hover {
+  background: #e74c3c;
+}
+.download .tiktok:hover {
+  background: #000;
+}
+.download .ig:hover {
+  background: #c13584;
+}
+.download .facebook:hover {
+  background: #1877f2;
+}
+.download .threads:hover {
+  background: #444;
+}

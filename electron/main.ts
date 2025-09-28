@@ -1,53 +1,116 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, ipcMain, dialog } from "electron";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import fs from "node:fs/promises";
 
-// Get the directory name in ES module scope
+// Import IPC modules (converted to TS)
+import { registerYouTubeIpc } from "../resources/.icp/youtube";
+import { registerTikTokIpc } from "../resources/.icp/tiktok";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// The built directory structure
-const DIST = (process.env.DIST = path.join(__dirname, "../dist"));
-const PUBLIC = (process.env.PUBLIC = app.isPackaged
-  ? process.env.DIST
-  : path.join(process.env.DIST, "../public"));
+// Dist + public paths
+const DIST = path.join(__dirname, "../dist");
+const PUBLIC = app.isPackaged ? DIST : path.join(DIST, "../public");
 
-let win: BrowserWindow | null;
-const preload = app.isPackaged
-  ? path.join(__dirname, "./preload.js") // compiled
-  : path.join(__dirname, "../preload.ts"); // dev
+// let win: BrowserWindow | null = null;
+
+const preload = path.join(__dirname, "./preload.js");
+
 
 const url = process.env["VITE_DEV_SERVER_URL"];
 
-function createWindow() {
-  win = new BrowserWindow({
+// Store all open windows
+const windows = new Set<BrowserWindow>();
+
+function createWindow(filePath = "index.html") {
+  const win = new BrowserWindow({
+    width: 900,
+    height: 800,
+    minWidth: 800,
+    minHeight: 600,
     icon: path.join(PUBLIC, "favicon.ico"),
     webPreferences: {
-      contextIsolation: true, // required when using contextBridge
-      nodeIntegration: false, // safer
+      contextIsolation: true,
+      nodeIntegration: false,
       preload,
     },
+
+    show: false,
   });
 
-  // Test active push message to Renderer-process.
-  win.webContents.on("did-finish-load", () => {
-    win?.webContents.send("main-process-message", new Date().toLocaleString());
-  });
+  // Show when ready
+  win.once("ready-to-show", () => win.show());
 
-  if (url) {
-    win.loadURL(url);
+  win.on("closed", () => windows.delete(win));
+
+  // Load content
+  if (url && filePath === "index.html") {
+    win.loadURL(url).catch(console.error);
     win.webContents.openDevTools();
   } else {
-    win.loadFile(path.join(DIST, "index.html"));
+    const fullPath = path.join(DIST, filePath);
+    win.loadFile(fullPath).catch((err) => {
+      console.error(`Failed to load ${fullPath}:`, err);
+      dialog.showErrorBox("Load Error", `Failed to load ${fullPath}`);
+    });
   }
+
+  windows.add(win);
+  return win;
 }
 
-app.on("window-all-closed", () => {
-  win = null;
-  if (process.platform !== "darwin") app.quit();
+app.whenReady().then(() => {
+  const mainWindow = createWindow();
+
+  // ✅ Register IPC handlers
+  registerYouTubeIpc(ipcMain);
+  registerTikTokIpc(ipcMain);
+  // registerInstagramIpc(ipcMain);
+  // registerFacebookIpc(ipcMain);
+
+  // Open new download window (like old cjs)
+  ipcMain.on("open-new-download", () => {
+    const newWindow = createWindow("download_tiktok.html");
+    const bounds = mainWindow.getBounds();
+    newWindow.setBounds({
+      x: bounds.x + 30,
+      y: bounds.y + 30,
+      width: 800,
+      height: 600,
+    });
+  });
+
+  // Close current window
+  ipcMain.on("close-current-window", (event) => {
+    const window = BrowserWindow.fromWebContents(event.sender);
+    window?.close();
+  });
+
+  // Folder selector with write validation
+  ipcMain.handle("select-folder", async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ["openDirectory", "createDirectory"],
+      title: "Select Download Folder",
+    });
+
+    if (result.canceled) return null;
+
+    const folderPath = result.filePaths[0];
+    try {
+      await fs.access(folderPath, fs.constants.W_OK);
+      return folderPath;
+    } catch {
+      throw new Error(`No write permission for folder: ${folderPath}`);
+    }
+  });
 });
 
-app.whenReady().then(createWindow);
+// Quit when all windows are closed
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") app.quit();
+});
 
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
